@@ -14,13 +14,10 @@ def compress_image(image_path, compression_ratio):
     green_channel_fft = fft2(green_channel)
     red_channel_fft = fft2(red_channel)
 
-    # Określ ilość współczynników do zachowania (zgodnie z kompresją)
     num_coefficients_to_keep = int(np.prod(original_image.shape) * (1 - compression_ratio))
 
-    # Upewnij się, że num_coefficients_to_keep nie przekracza liczby współczynników w danym kanale
     num_coefficients_to_keep = min(num_coefficients_to_keep, blue_channel.size - 1)
 
-    # Ustaw współczynniki poza zakresem do usunięcia
     flat_blue_fft = blue_channel_fft.flatten()
     flat_blue_fft[np.argsort(np.abs(flat_blue_fft))[:-num_coefficients_to_keep]] = 0
     blue_channel_fft = flat_blue_fft.reshape(blue_channel_fft.shape)
